@@ -103,7 +103,7 @@ while val == 1:
               os.system(tmp)
               print "OK"
               #change statue
-              tmp = "UPDATE Painting set LOADPATH = '" +name[1:]+ "' where ID = "+str(row[0])
+              tmp = "UPDATE Painting set LOADPATH ='" +name+ "' where ID = "+str(row[0])
               print tmp
               #c.execute("UPDATE Painting set STATUS = 1 where ID = "+str(row[0]))
               c.execute(tmp)
