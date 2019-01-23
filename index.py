@@ -37,7 +37,7 @@ def CreateTask():
         PaintingCount = PaintingCount+1
         f = request.files['file']
         # print "OK"
-        UPLOAD_FOLDER ="/home/alisa/Chinese-painting-transform-/"
+        UPLOAD_FOLDER ="/root/Chinese-painting-transform-/recv/"
         print UPLOAD_FOLDER[0:]
         name = UPLOAD_FOLDER + str(PaintingCount)+"."+ secure_filename(f.filename)
 
@@ -66,7 +66,7 @@ def GetTaskStatus(id):
         c = conn.cursor()
         cursor = c.execute("SELECT ID, STATUS  from Painting")
         for row in cursor:
-            if id == row[0]:
+            if int(id) == row[0]:
                 status = 1
                 ret = [status,row[1]]
                 ret =  json.dumps(ret,indent=4)
@@ -78,7 +78,8 @@ def GetTaskStatus(id):
 def return_img_stream(img_local_path):
     img_stream = ''
     print "OK"
-    with open(img_local_path, 'r') as img_f:
+#    print type(img_local_path)
+    with open(str(img_local_path), 'r') as img_f:
         img_stream = img_f.read()
         img_stream = base64.b64encode(img_stream)
         print "ok"
@@ -116,3 +117,5 @@ def DeletePainting(id):
     ret=[1]
     ret = json.dumps(ret,indent=4)
     return ret
+
+
