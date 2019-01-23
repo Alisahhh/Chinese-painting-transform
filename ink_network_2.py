@@ -253,9 +253,9 @@ class CycleGAN:
         tf.summary.scalar('loss/F', F_gan_loss)
         tf.summary.scalar('loss/D_X', D_X_loss)
         tf.summary.scalar('loss/cycle', cycle_loss)
-        tf.summary.scalar('loss/ink', ink_loss)
-        tf.summary.scalar('loss/id', id_loss_D)
-        tf.summary.scalar('loss/id', id_loss_G)
+        tf.summary.scalar('loss/ink_D', ink_loss_D)
+        tf.summary.scalar('loss/ink_G', ink_loss_G)
+        tf.summary.scalar('loss/id', id_loss)
 
         x_generate = fake_y
         x_reconstruct = self.F(fake_y)
