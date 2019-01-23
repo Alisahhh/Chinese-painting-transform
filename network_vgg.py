@@ -228,10 +228,10 @@ class CycleGAN:
         # cycle loss
         cycle_loss = self.cycle_consistency_loss(self.G, self.F, self.x_image, self.y_image, fake_x, fake_y)
         # ink_loss
-        ink_loss = self.discriminator_loss(self.D_Y, self.y_image, fake_y, gan="ink_loss")
+        #ink_loss = self.discriminator_loss(self.D_Y, self.y_image, fake_y, gan="ink_loss")
 
         # identity loss
-        id_loss = self.cycle_consistency_loss(self.G, self.F, self.x_image, self.y_image, self.y_image, self.x_image)
+        #id_loss = self.cycle_consistency_loss(self.G, self.F, self.x_image, self.y_image, self.y_image, self.x_image)
 
         pre_x_image = tf.subtract(self.x_image, vgg_mean_pixel)
         vgg_x = vgg.net_preloaded(self.vgg_weights, pre_x_image, max)
@@ -249,13 +249,13 @@ class CycleGAN:
 
         # X -> Y
         G_gan_loss = self.generator_loss(self.D_Y, fake_y, gan=cfg.gan)
-        G_loss = G_gan_loss + cycle_loss + id_loss + content_loss
-        D_Y_loss = self.discriminator_loss(self.D_Y, self.y_image, self.fake_y, gan=cfg.gan)+ink_loss
+        G_loss = G_gan_loss + cycle_loss + content_loss
+        D_Y_loss = self.discriminator_loss(self.D_Y, self.y_image, self.fake_y, gan=cfg.gan)
 
 
         # Y -> X
         F_gan_loss = self.generator_loss(self.D_X, fake_x, gan=cfg.gan)
-        F_loss = F_gan_loss + cycle_loss + id_loss + content_loss
+        F_loss = F_gan_loss + cycle_loss + content_loss
         D_X_loss = self.discriminator_loss(self.D_X, self.x_image, self.fake_x, gan=cfg.gan)
 
 
@@ -271,8 +271,8 @@ class CycleGAN:
         tf.summary.scalar('loss/F', F_gan_loss)
         tf.summary.scalar('loss/D_X', D_X_loss)
         tf.summary.scalar('loss/cycle', cycle_loss)
-        tf.summary.scalar('loss/ink', ink_loss)
-        tf.summary.scalar('loss/id', id_loss)
+        #tf.summary.scalar('loss/ink', ink_loss)
+        #tf.summary.scalar('loss/id', id_loss)
         tf.summary.scalar('loss/id', content_loss)
 
         x_generate = fake_y
