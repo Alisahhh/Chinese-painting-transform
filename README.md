@@ -15,7 +15,7 @@ Aiming at the traditional painting transfer to real photos problem, we provide T
 
 ## Model Details
 ### Identity loss  
-preserve the color of the input painting  
+preserve the color of the input painting: G(y)--y,F(x)--x    
 <img src='imgs/id-loss.png' width='300'>
 ### Ink loss  
 fade unnecessary textures by training D_y and G between erosion-blur image(G(x)) and y  
@@ -25,7 +25,7 @@ fade unnecessary textures by training D_y and G between erosion-blur image(G(x))
 |<img src='imgs/test.jpg' width='200'>| <img src='imgs/erode.jpg' width='200'>| <img src='imgs/blur.jpg' width='200'>|
 
 ### Content loss  
-use vgg19 to extract image feature then constraint the constent between the input and the generate image: G(y)--y,F(x)--x  
+use vgg19 to extract image feature then constraint the constent between the input and the generate images:   
 <img src='imgs/content-loss.png' width='300'>
 ### Train/Test
 - Prepare dataset:
