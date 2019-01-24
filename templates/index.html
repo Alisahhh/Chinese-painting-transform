@@ -1,16 +1,176 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-			<title>华中科技大学CS1708作业提交系统</title>
-				</head>
-                    <body>
-                        <form name="input" action="/api/task/create"  method="post" enctype="multipart/form-data">
-                            学号<input type="text" name="id"><br>
-                            姓名<input type="text" name="name"><br>
-                            选择文件<input type="file" name="file">
-                            <input type="submit" value="提交">
-                        </form>
-                    </body>
-</html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- 移动端适配 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- 让 360 浏览器 开启 Chromium 内核-->
+    <meta name="renderer" content="webkit"/>
 
+    <script type="text/javascript">
+        if (!!navigator.userAgent.match(/Trident/g) ) {
+            if (!confirm('即便是 IE 11 也不会正确渲染的！绝对不支持 Internet Explorer。\n是否坚持打开？')){
+                window.history.back();
+                window.location.href = 'about:blank';//无法后退时，回到空白页
+            }
+        }else if(!!navigator.userAgent.match(/MSIE/g)){
+            if (!confirm('请不要使用 Internet Explorer 打开！IE 不会正确渲染的。\n是否坚持打开？')){
+                window.history.back();
+                window.location.href = 'about:blank';
+            }
+        }
+    </script>
+
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+
+    <title>INK PAINTING!</title>
+</head>
+<body>
+<style>
+body
+{
+	background-image:url('static/images/draw.JPG');
+	background-repeat:no-repeat;
+	background-position:left top;
+	margin-right:300px;
+}
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="./index.html"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon">Ink Painting！</span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item" id="back">
+                <a class="nav-link" id="back" href="#">返回主页</a>
+            </li>
+	    <li class="nav-item" id="selection-sort-nav-item">
+                <a class="nav-link" id="selection-sort-nav" href="#">上传图片</a>
+            </li>
+            <li class="nav-item" id="bubble-sort-nav-item">
+                <a class="nav-link" id="bubble-sort-nav" href="#">查看状态</a>
+            </li>
+            <li class="nav-item" id="insertion-sort-nav-item">
+                <a class="nav-link" id="insertion-sort-nav" href="#">联系我们</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<br/>
+<div class="container">
+    <div class="row" id="introduction"></div>
+
+    <link rel="stylesheet" href="/static/css/sort-animation.css">
+
+    <script src="/static/js/sort-animation/SortAnimate.js"></script>
+    <script src="/static/js/sort-animation/bubble.js"></script>
+    <script src="/static/js/sort-animation/insert.js"></script>
+    <script src="/static/js/sort-animation/quick.js"></script>
+    <script src="/static/js/sort-animation/merge.js"></script>
+    <script src="/static/js/sort-animation/selection.js"></script>
+    <div class="row">
+        <div class="sort-animate-wrap " style="margin: 0 auto" id="sortAnimateBox"></div>
+    </div>
+    <hr/>
+   
+
+    <script src="/static/js/jquery-3.2.1.min.js"></script>
+    <script src="/static/js/popper.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    <script>
+        $('#selection-sort-nav').click(function (e) {
+            $('#introduction').load('/static/include/selection-sort.html');
+            $('.nav-item').removeClass("active");
+            $('#selection-sort-nav-item').addClass("active");
+        });
+
+        $('#bubble-sort-nav').click(function (e) {
+            $('#introduction').load('/static/include/bubble-sort.html',getTaskList);
+            $('.nav-item').removeClass("active");
+            $('#bubble-sort-nav-item').addClass("active");
+        });
+
+        $('#insertion-sort-nav').click(function (e) {
+            $('#introduction').load('/static/include/insertion-sort.html');
+            $('.nav-item').removeClass("active");
+            $('#insertion-sort-nav-item').addClass("active");
+        });
+	 $('#back').click(function (e) {
+            $('#introduction').load('/static/include/block.html');
+            $('.nav-item').removeClass("active");
+            $('#insertion-sort-nav-item').addClass("active");
+        });
+
+
+        $(document).ready(function () {
+            $('#selection-sort-nav').click();
+        });
+
+	function getTaskList() {
+            var url = "/api/task"
+            var request = new XMLHttpRequest();
+            console.log("Getting task list...");
+            request.open("GET",url);
+            request.send();
+            request.onload = function() {
+                if(request.status == 200) {
+                    var contentdiv = document.getElementById("content");
+                    var jsoncontent = JSON.parse(request.responseText);
+		    var tableRef = document.getElementById('mytable').getElementsByTagName('tbody')[0];
+		    for (var i = 0; i < jsoncontent.length; i++){
+			var newRow   = tableRef.insertRow(tableRef.rows.length);
+			var newCell  = newRow.insertCell(0);
+			var newText  = document.createTextNode(jsoncontent[i].ID);
+			newCell.appendChild(newText);
+			var x="pending";
+                        if (jsoncontent[i].WTATUS == 1) {
+                                x="process";
+                        }
+                        if (jsoncontent[i].WTATUS == 2) {
+                                x="finished";
+                        }
+                        var newText  = document.createTextNode(x);
+			newCell  = newRow.insertCell(1);
+                        newCell.appendChild(newText);			
+			newCell  = newRow.insertCell(2);
+			newCell.innerHTML = "<a href=\"/api/task/"+jsoncontent[i].ID+"/download\">预览</a>";
+		    }
+//                    var jsondiv = document.createElement("div");
+//                    jsondiv.innerHTML = jsoncontent[0].ID;
+//                    contentdiv.appendChild(jsondiv);
+                }
+            }
+        }
+
+
+        // var sortanimte = null;
+
+        // function playSortAnimate(animateSort) {
+        //     var length = Math.floor($('.container').width() / 25); //数组长度
+        //     var arr = function (len) {
+        //         len = len || 30;
+        //         var arr = [];
+        //         for (var i = 0; i < len; i++) {
+        //             arr.push(i);
+        //         }
+        //         arr.sort(function () {
+        //             return Math.random() - 0.5;
+        //         });
+        //         return arr;
+        //     }(length);//生成随机数
+
+        //     sortanimte = new SortAnimate(arr, document.querySelector('#sortAnimateBox'));
+        //     window[animateSort](arr, sortanimte);
+        //     sortanimte.play(100 - document.getElementById('speed-control').value);//默认速度
+        // }
+
+    </script>
+
+</div>
+</body>
+</html>

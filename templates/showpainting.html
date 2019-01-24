@@ -1,11 +1,59 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Flask Show Image</title>
-</head>
-<body>
-    <img style="width:180px" src="data:;base64,{{ img_stream }}">
-</body>
-</html>
+<style>
+body{
+	background: url(http://insightreport.debeersgroup.com/_images/backgrounds/global-consumer-demand-bg.jpg);
+}
+.container{
+  width: 900px;
+  margin: 0 auto;
+}
+.card{
+  /* 設定父親定位點 */
+  position: relative;
+  width: 400px;
+  float:left;
+  margin: 10px;
+}
+img{
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.info{
+/*   display: none; */
+  opacity: 0;
+  position: absolute;
+  box-sizing: border-box;
+  background-color: rgba(0,0,0,.3);
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  padding-top: 40px;
+}
+.info p{
+  color: #fff;
+}
+.info:hover{
+  -webkit-transition: 500ms;
+  opacity: 1;
+}
+</style>
+<div class="container">
+    <div class="card">
+      <img src="data:;base64,{{ img_stream1 }}" alt="">
+      <div class="info">
+        <button>View More</button>
+        <p>Hello World!</p>
+      </div>
+    </div>
+    
+    <div class="card">
+      <img src="data:;base64,{{ img_stream2 }}"  alt="">
+      <div class="info">
+        <button>View More</button>
+        <p>Hello World!</p>
+      </div>
+    </div>
+    
+    
+  </div>

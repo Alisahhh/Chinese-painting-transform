@@ -4,6 +4,7 @@ from flask import request
 from werkzeug.utils import secure_filename
 import json
 from flask import render_template
+#from cv2
 import base64
 app = Flask(__name__)
 
@@ -21,7 +22,7 @@ def TaskList():
     cursor = c.execute("SELECT ID, STATUS  from Painting")
     ret = [] 
     for i in cursor:
-        tmp = {'ID': i[0], 'STATUS': i[1]} 
+        tmp = {'ID': i[0], 'WTATUS': i[1]} 
         ret.append(tmp)
     ret = json.dumps(ret, indent=4)
     return ret
@@ -36,6 +37,7 @@ def CreateTask():
         # print "OK"
         PaintingCount = PaintingCount+1
         f = request.files['file']
+	#out = f.resize(512,512,Image.ANTIALIAS) 
         # print "OK"
         UPLOAD_FOLDER ="/root/Chinese-painting-transform-/recv/"
         print UPLOAD_FOLDER[0:]
@@ -91,15 +93,16 @@ def DownloadPainting(id):
     if request.method == 'GET':
         conn = sqlite3.connect('test.db')
         c = conn.cursor()
-        cursor = c.execute("SELECT ID, LOADPATH  from Painting")
+        cursor = c.execute("SELECT ID, RECVPATH , LOADPATH  from Painting")
         for row in cursor:
             # print type(row[0])
             # print type(int(id))
             # print id == row[0]
             if int(id) == row[0]:
                 print row[1]
-                img_stream = return_img_stream(row[1])
-                return render_template('showpainting.html',img_stream=img_stream)
+                img_stream1 = return_img_stream(row[1])
+		img_stream2 = return_img_stream(row[2])
+                return render_template('showpainting.html',img_stream1=img_stream1,img_stream2=img_stream2)
     ret=[status]
     ret = json.dumps(ret,indent=4)
     return ret

@@ -1,0 +1,15 @@
+.sort-animate-wrap{
+    height:200px;
+    margin:10px 0;
+}
+
+.column{
+    width:20px;height:100%;background:#cccccc;display:inline-block;margin:0 1px;float:none;
+    padding:0;
+}
+.column:hover{background:#f30;}
+.focus{background:#ffcccc;}
+.highlight{
+    background:#ff6666;
+    margin-bottom:0 !important;
+}
