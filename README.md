@@ -43,6 +43,7 @@ sh rtrain.sh
 python test.py
 
 ```
+![vgg pretrain model](http://www.vlfeat.org/matconvnet/models/imagenet-vgg-verydeep-19.mat)
 ## Demo 
 
 ## Dataset
