@@ -2,8 +2,16 @@
 By Kehan Xu, Minyan Wu, Jiangong Zhang
 
 Task: Chinese traditional painting to real photos  
+
 ## Introduction
 Aiming at the traditional painting transfer to real photos problem, we provide Tensorflow model based on CycleGAN adding three additional losses to improve the performance, which are identity loss, ink loss and content loss respectively.  
+### painting to photos(scene dataset)
+
+|input|CycleGAN+L(id)+L(ink)|CycleGAN+L(id)+L(ink)+L(content)|
+|---|----|-----|
+|<img src='imgs/mount.jpg' width='200'>| <img src='imgs/mount_2loss.jpg' width='200'>| <img src='imgs/mount_3loss.jpg' width='200'>|
+|<img src='imgs/stone.jpg' width='200'>| <img src='imgs/stone_2loss.jpg' width='200'>| <img src='imgs/stone_3loss.jpg' width='200'>|
+|<img src='imgs/draw.jpg' width='200'>| <img src='imgs/draw_2loss.jpg' width='200'>| <img src='imgs/draw_3loss.jpg' width='200'>|
 
 ## Model Details
 ### Identity loss  
